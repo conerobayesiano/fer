@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>FerWeb!!!!</title>
+  <style>
+    body {
+      background-color: #000033;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ctext x='10' y='20' font-size='14' fill='%2300aa44'%3E✦%3C/text%3E%3Ctext x='40' y='50' font-size='10' fill='%2300aa44'%3E✦%3C/text%3E%3C/svg%3E");
+      color: #00ff00;
+      font-family: "Times New Roman", serif;
+      margin: 4px;
+    }
+    a         { color: #ff00ff; }
+    a:visited { color: #ffff00; }
+    a:hover   { color: #ff0000; }
+    marquee   { color: #ffff00; font-size: 13px; font-weight: bold; }
+
+    .blink { animation: blink 0.8s step-start infinite; }
+    @keyframes blink { 50% { visibility: hidden; } }
+
+    .layout-table { width: 100%; }
+
+    .nav-sidebar {
+      background-color: #000066;
+      border: 2px outset #aaaaaa;
+      font-size: 12px;
+      padding: 4px;
+      vertical-align: top;
+      width: 110px;
+    }
+    .nav-sidebar a {
+      background: #003399;
+      border: 2px outset #6666ff;
+      color: #ffffff;
+      display: block;
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 4px;
+      padding: 3px;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .main-content {
+      background-color: #111133;
+      border: 3px inset #888888;
+      padding: 8px;
+      vertical-align: top;
+    }
+
+    .speaker-wrap {
+      align-items: center;
+      display: inline-flex;
+      gap: 0;
+    }
+    .speaker-btn {
+      background: #000033;
+      border: 2px outset #aaaaaa;
+      color: #00ff00;
+      cursor: pointer;
+      font-size: 22px;
+      line-height: 1;
+      padding: 3px 7px;
+      vertical-align: middle;
+    }
+    .speaker-btn:hover { background: #000066; border-style: inset; }
+    .speaker-btn.playing { color: #ffff00; }
+
+    .volume-bar {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s, width 0.15s;
+      vertical-align: middle;
+      width: 0;
+    }
+    .speaker-wrap:has(.speaker-btn.playing):hover .volume-bar {
+      opacity: 1;
+      pointer-events: auto;
+      width: 72px;
+    }
+    .volume-bar::-webkit-slider-runnable-track {
+      background: #001400;
+      border: 1px inset #009900;
+      height: 7px;
+    }
+    .volume-bar::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      background: #00ff00;
+      border: 1px solid #009900;
+      height: 15px;
+      margin-top: -4px;
+      width: 8px;
+    }
+    .volume-bar::-moz-range-track {
+      background: #001400;
+      border: 1px inset #009900;
+      height: 7px;
+    }
+    .volume-bar::-moz-range-thumb {
+      background: #00ff00;
+      border: 1px solid #009900;
+      border-radius: 0;
+      height: 15px;
+      width: 8px;
+    }
+
+    .comic-title-bar {
+      background: #003300;
+      border: 2px outset #006600;
+      color: #00ff00;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 3px 8px;
+    }
+
+    .folder {
+      cursor: pointer;
+      text-align: center;
+      width: 62px;
+    }
+    .folder-icon {
+      background: #ffcc44;
+      border: 1px solid #886600;
+      border-radius: 0 3px 3px 3px;
+      box-shadow: 1px 1px 0 #ccaa00;
+      height: 38px;
+      margin: 0 auto;
+      position: relative;
+      width: 48px;
+    }
+    .folder-icon::before {
+      background: #ffcc44;
+      border: 1px solid #886600;
+      border-bottom: none;
+      border-radius: 3px 3px 0 0;
+      content: '';
+      height: 7px;
+      left: 0;
+      position: absolute;
+      top: -7px;
+      width: 18px;
+    }
+    .folder:hover .folder-icon { background: #ffe066; }
+    .folder-label {
+      color: #cccccc;
+      font-size: 10px;
+      line-height: 1.2;
+      margin-top: 4px;
+      word-break: break-word;
+    }
+
+    .footer {
+      color: #666666;
+      font-size: 10px;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    .geocities-logo {
+      background: linear-gradient(90deg, #cc0000, #ff6600);
+      border: 2px outset #ffaaaa;
+      border-radius: 2px;
+      color: white;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 2px 8px;
+    }
+
+    .guestbook {
+      background: #000044;
+      border: 2px inset #aaaaaa;
+      font-size: 12px;
+      padding: 6px;
+    }
+
+    .header-gif {
+      border: 2px outset #aaaaaa;
+      float: right;
+      margin-left: 10px;
+      max-height: 100px;
+    }
+
+    .hit-counter {
+      background: #000000;
+      border: 2px inset #888;
+      color: #ff4400;
+      display: inline-block;
+      font-family: "Courier New", monospace;
+      font-size: 18px;
+      letter-spacing: 3px;
+      padding: 2px 8px;
+    }
+
+    .image-row {
+      align-items: center;
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 4px;
+    }
+    .image-row img {
+      border: 2px outset #aaaaaa;
+      flex: 1;
+      max-height: 150px;
+      min-width: 0;
+      object-fit: contain;
+      width: 100%;
+    }
+
+    .nav-bar {
+      background: #000066;
+      border: 2px outset #aaaaaa;
+      padding: 3px;
+      text-align: center;
+    }
+    .nav-btn {
+      background: #003399;
+      border: 2px outset #8888cc;
+      color: #ffffff;
+      cursor: pointer;
+      font-family: "Times New Roman";
+      font-size: 11px;
+      margin: 1px;
+      padding: 2px 6px;
+    }
+    .nav-btn:hover { background: #0055cc; }
+
+    .section-header {
+      border-bottom: 1px solid #ffff00;
+      color: #ffff00;
+      font-size: 15px;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+
+    .site-title {
+      background: #222244;
+      border: 2px outset #999;
+      color: #cccccc;
+      display: inline-block;
+      font-family: Impact, "Arial Black", sans-serif;
+      font-size: 42px;
+      font-weight: bold;
+      letter-spacing: -2px;
+      padding: 6px 14px;
+      text-shadow: 2px 2px #000000;
+    }
+
+    .spam-img {
+      background: #cc0000;
+      border: 2px outset #ff6666;
+      color: white;
+      display: inline-block;
+      font-family: Arial;
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 5px;
+    }
+
+    .under-construction {
+      background: repeating-linear-gradient(
+        45deg,
+        #ffcc00, #ffcc00 10px,
+        #000000 10px, #000000 20px
+      );
+      border: 2px outset #ffcc00;
+      color: #000;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      padding: 3px 10px;
+      text-align: center;
+    }
+
+    .welcome-msg {
+      color: #ff3333;
+      font-size: 13px;
+      font-weight: bold;
+      margin-top: 8px;
+    }
+
+    .yahoo-bar {
+      background: #660066;
+      border: 2px outset #cc66cc;
+      color: #ffffff;
+      font-family: Arial;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="under-construction">&nbsp;⚠&nbsp; Hombres trabajando! &nbsp;⚠&nbsp;</div>
+<marquee behavior="scroll" direction="left">★ Ola, Fer, bienvenida a tu página ★</marquee>
+
+<audio id="soundtrack" src="audio/blur-for-tomorrow.mp3" loop></audio>
+
+<br>
+
+<table class="layout-table" cellpadding="4" cellspacing="3">
+  <tr>
+
+    <td class="nav-sidebar">
+      <a href="#">fotos de nuestras salidas!!!</a>
+      <a href="#">cosas que sé de ti</a>
+      <a href="#">cosas que me hicieron pensar en ti cuando no hablamos</a>
+      <a href="#">(mensajitos que quieras dejar)</a>
+    </td>
+
+    <td class="main-content">
+      <img class="header-gif" src="gatos/glittering-cats.gif" alt="Glittering Cats">
+
+      <div style="display:inline-flex; align-items:center; gap:6px;">
+        <div class="site-title">FerWeb</div>
+        <div class="speaker-wrap">
+          <button class="speaker-btn" id="speakerBtn" title="Play / Pause" onclick="toggleAudio()">🔇</button>
+          <input class="volume-bar" id="volumeBar" type="range" min="0" max="1" step="0.05" value="1">
+        </div>
+      </div>
+
+      <p class="welcome-msg">Para celebrar que volvimos a hablar, te hice una página de gatitos.</p>
+
+      <div class="section-header">★ Bienvenida a tu página, mira, gatitos noventeros: ★</div>
+      <div class="image-row">
+        <img src="gatos/cats-portrait.jpg"   alt="Gatos">
+        <img src="gatos/cats-animated.gif"   alt="Gatos animados">
+        <img src="gatos/kisses-kittens.gif"  alt="Gatitos con besos">
+      </div>
+
+      <div class="section-header">★ también flores tuyas ★</div>
+      <div class="image-row">
+        <img src="flores/The-Rose-1.jpg"                    alt="Rosa">
+        <img src="flores/Lavemder-plant.webp"               alt="Lavanda">
+        <img src="flores/Sunflowers_helianthus_annuus.jpg"  alt="Girasoles">
+        <img src="flores/VVHDJIWK4FFHBHWQVE37V4YDJE.jpg"   alt="Flores">
+      </div>
+    </td>
+
+  </tr>
+</table>
+
+<div class="footer">
+  &copy; 2026 Christopher Melendez &mdash; No hay derechos de autor, pero sígueme como camelendezl en github!!!
+</div>
+
+<script>
+  var audio = document.getElementById('soundtrack');
+  var btn   = document.getElementById('speakerBtn');
+  var vol   = document.getElementById('volumeBar');
+
+  function toggleAudio() {
+    if (audio.paused) {
+      audio.play();
+      btn.textContent = '🔊';
+      btn.classList.add('playing');
+    } else {
+      audio.pause();
+      btn.textContent = '🔇';
+      btn.classList.remove('playing');
+    }
+  }
+
+  vol.addEventListener('input', function() {
+    audio.volume = this.value;
+    btn.textContent = this.value == 0 ? '🔇' : '🔊';
+  });
+</script>
+</body>
+</html>
