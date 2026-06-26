@@ -293,12 +293,115 @@
       font-weight: bold;
       padding: 2px 8px;
     }
+
+    /* Modal */
+    .modal-overlay {
+      align-items: center;
+      background: rgba(0, 0, 0, 0.78);
+      bottom: 0;
+      display: flex;
+      justify-content: center;
+      left: 0;
+      position: fixed;
+      right: 0;
+      top: 0;
+      z-index: 999;
+    }
+    .modal-box {
+      background: #000044;
+      border: 3px outset #aaaaaa;
+      max-width: 370px;
+      width: 92%;
+    }
+    .modal-titlebar {
+      align-items: center;
+      background: #000099;
+      border-bottom: 2px outset #6666cc;
+      color: #ffffff;
+      display: flex;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      font-weight: bold;
+      justify-content: space-between;
+      padding: 3px 6px;
+    }
+    .modal-close-btn {
+      background: #cc3333;
+      border: 1px outset #ff6666;
+      color: #ffffff;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: bold;
+      line-height: 1;
+      padding: 2px 6px;
+    }
+    .modal-close-btn:hover { background: #ff0000; }
+    .modal-body {
+      color: #ccccff;
+      font-size: 12px;
+      line-height: 1.6;
+      padding: 12px 14px 14px;
+    }
+
+    /* Guestbook form */
+    .gb-input {
+      background: #000022;
+      border: 2px inset #888888;
+      box-sizing: border-box;
+      color: #00ff00;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      padding: 3px;
+      width: 100%;
+    }
+    .gb-textarea {
+      background: #000022;
+      border: 2px inset #888888;
+      box-sizing: border-box;
+      color: #00ff00;
+      font-family: "Courier New", monospace;
+      font-size: 12px;
+      height: 60px;
+      padding: 3px;
+      resize: vertical;
+      width: 100%;
+    }
+    .gb-label {
+      color: #aaaaff;
+      font-size: 11px;
+      white-space: nowrap;
+    }
+    .gb-status {
+      color: #00ff00;
+      font-size: 11px;
+      margin-left: 6px;
+    }
+    .gb-entry {
+      border-bottom: 1px dashed #333366;
+      margin-top: 8px;
+      padding-bottom: 8px;
+    }
+    .gb-entry-name { color: #ffff00; font-size: 11px; font-weight: bold; }
+    .gb-entry-msg  { color: #ccccff; font-size: 12px; margin-top: 2px; }
+    .gb-entry-date { color: #666699; font-size: 10px; }
+    .gb-empty      { color: #666699; font-size: 11px; margin-top: 6px; }
   </style>
 </head>
 <body>
 
-<div class="under-construction">&nbsp;⚠&nbsp; Hombres trabajando! &nbsp;⚠&nbsp;</div>
-<marquee behavior="scroll" direction="left">★ Ola, Fer, bienvenida a tu página ★</marquee>
+<!-- Modal: se inyecta contenido por JS según la fecha -->
+<div class="modal-overlay" id="modalOverlay" onclick="handleOverlayClick(event)">
+  <div class="modal-box">
+    <div class="modal-titlebar">
+      <span id="modalTitle">FerWeb</span>
+      <button class="modal-close-btn" onclick="closeModal()">&#x2715;</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="under-construction">&nbsp;&#x26A0;&nbsp; Hombres trabajando! &nbsp;&#x26A0;&nbsp;</div>
+<marquee behavior="scroll" direction="left">&#x2605; Ola, Fer, bienvenida a tu p&#225;gina &#x2605;</marquee>
 
 <audio id="soundtrack" src="audio/blur-for-tomorrow.mp3" loop></audio>
 
@@ -309,9 +412,9 @@
 
     <td class="nav-sidebar">
       <a href="#">fotos de nuestras salidas!!!</a>
-      <a href="#">cosas que sé de ti</a>
+      <a href="#">cosas que s&#233; de ti</a>
       <a href="#">cosas que me hicieron pensar en ti cuando no hablamos</a>
-      <a href="#">(mensajitos que quieras dejar)</a>
+      <a href="#guestbook" onclick="document.getElementById('guestbook').scrollIntoView({behavior:'smooth'})">(mensajitos que quieras dejar)</a>
     </td>
 
     <td class="main-content">
@@ -320,37 +423,71 @@
       <div style="display:inline-flex; align-items:center; gap:6px;">
         <div class="site-title">FerWeb</div>
         <div class="speaker-wrap">
-          <button class="speaker-btn" id="speakerBtn" title="Play / Pause" onclick="toggleAudio()">🔇</button>
+          <button class="speaker-btn" id="speakerBtn" title="Play / Pause" onclick="toggleAudio()">&#x1F507;</button>
           <input class="volume-bar" id="volumeBar" type="range" min="0" max="1" step="0.05" value="1">
         </div>
       </div>
 
-      <p class="welcome-msg">Para celebrar que volvimos a hablar, te hice una página de gatitos.</p>
+      <p class="welcome-msg">Para celebrar que volvimos a hablar, te hice una p&#225;gina de gatitos.</p>
 
-      <div class="section-header">★ Bienvenida a tu página, mira, gatitos noventeros: ★</div>
+      <div class="section-header">&#x2605; Bienvenida a tu p&#225;gina, mira, gatitos noventeros: &#x2605;</div>
       <div class="image-row">
         <img src="gatos/cats-portrait.jpg"   alt="Gatos">
         <img src="gatos/cats-animated.gif"   alt="Gatos animados">
         <img src="gatos/kisses-kittens.gif"  alt="Gatitos con besos">
       </div>
 
-      <div class="section-header">★ también flores tuyas ★</div>
+      <div class="section-header">&#x2605; tambi&#233;n flores tuyas &#x2605;</div>
       <div class="image-row">
         <img src="flores/The-Rose-1.jpg"                    alt="Rosa">
         <img src="flores/Lavemder-plant.webp"               alt="Lavanda">
         <img src="flores/Sunflowers_helianthus_annuus.jpg"  alt="Girasoles">
         <img src="flores/VVHDJIWK4FFHBHWQVE37V4YDJE.jpg"   alt="Flores">
       </div>
+
+      <!-- Guestbook -->
+      <div id="guestbook" style="scroll-margin-top: 8px;">
+        <div class="section-header">&#x2605; mensajitos &#x2605;</div>
+        <div class="guestbook">
+          <form id="gbForm" onsubmit="submitMessage(event)">
+            <table cellpadding="3" style="width:100%">
+              <tr>
+                <td class="gb-label">Tu nombre:</td>
+                <td><input class="gb-input" id="gbName" type="text" maxlength="50" required></td>
+              </tr>
+              <tr>
+                <td class="gb-label" style="vertical-align:top">Mensaje:</td>
+                <td><textarea class="gb-textarea" id="gbMessage" maxlength="500" required></textarea></td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <button type="submit" class="nav-btn" id="gbSubmit">Dejar nota</button>
+                  <span class="gb-status" id="gbStatus"></span>
+                </td>
+              </tr>
+            </table>
+          </form>
+          <div id="gbMessages"></div>
+        </div>
+      </div>
+
     </td>
 
   </tr>
 </table>
 
 <div class="footer">
-  &copy; 2026 Christopher Melendez &mdash; No hay derechos de autor, pero sígueme como camelendezl en github!!!
+  &copy; 2026 Christopher Melendez &mdash; No hay derechos de autor, pero s&#237;gueme como camelendezl en github!!!
 </div>
 
+<!-- Firebase compat SDK -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<!-- EmailJS -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
 <script>
+  /* ── Audio ── */
   var audio = document.getElementById('soundtrack');
   var btn   = document.getElementById('speakerBtn');
   var vol   = document.getElementById('volumeBar');
@@ -371,6 +508,133 @@
     audio.volume = this.value;
     btn.textContent = this.value == 0 ? '🔇' : '🔊';
   });
+
+  /* ── Modal ── */
+  function isBirthday() {
+    var d = new Date();
+    var m = d.getMonth() + 1;
+    var day = d.getDate();
+    return (m === 9 && day >= 10) || (m === 10 && day <= 8);
+  }
+
+  function closeModal() {
+    document.getElementById('modalOverlay').style.display = 'none';
+  }
+
+  function handleOverlayClick(e) {
+    if (e.target === document.getElementById('modalOverlay')) closeModal();
+  }
+
+  function goToGuestbook() {
+    closeModal();
+    document.getElementById('guestbook').scrollIntoView({ behavior: 'smooth' });
+  }
+
+  if (isBirthday()) {
+    document.getElementById('modalTitle').textContent = 'feliz cumpleaños Fer!!!';
+    document.getElementById('modalBody').innerHTML =
+      '<p><span class="blink">&#x2605; Feliz cumpleaños!! &#x2605;</span></p>' +
+      '<p>No sé exactamente cuándo es tu cumpleaños, pero sé que es por estos días. Espero que estés teniendo un día bueno.</p>' +
+      '<p>Si quieres puedes dejar una nota en los mensajitos de abajo, te prometo que los leeré.</p>' +
+      '<p style="text-align:center; margin-top:10px">' +
+        '<button class="nav-btn" onclick="goToGuestbook()">dejar una nota &#x2193;</button>' +
+        '&nbsp;<button class="nav-btn" onclick="closeModal()">entrar</button>' +
+      '</p>';
+  } else {
+    document.getElementById('modalTitle').textContent = 'Hola Fer!!';
+    document.getElementById('modalBody').innerHTML =
+      '<p>Espero algún día volvamos a hablar.</p>' +
+      '<p>Hice algunos cambios en la página y por ahora funciona el botón de mensajitos. Te prometo que los leeré algún día.</p>' +
+      '<p style="text-align:center; margin-top:10px">' +
+        '<button class="nav-btn" onclick="closeModal()">entrar</button>' +
+      '</p>';
+  }
+
+  /* ── Firebase ── */
+  var firebaseConfig = {
+    apiKey: "AIzaSyAmuCYplKUhQji85tySRuCSZBSr8d0LXHA",
+    authDomain: "yasabes-1782b.firebaseapp.com",
+    databaseURL: "https://yasabes-1782b-default-rtdb.firebaseio.com",
+    projectId: "yasabes-1782b",
+    storageBucket: "yasabes-1782b.firebasestorage.app",
+    messagingSenderId: "87543530403",
+    appId: "1:87543530403:web:2a7f2dc5d8f36b0e5dd016"
+  };
+  firebase.initializeApp(firebaseConfig);
+  var db = firebase.database();
+
+  /* ── EmailJS ── */
+  emailjs.init("HSQTvbx35lPiMiYL1");
+
+  /* ── Guestbook: cargar mensajes ── */
+  db.ref('messages').orderByChild('timestamp').on('value', function(snapshot) {
+    var container = document.getElementById('gbMessages');
+    container.innerHTML = '';
+    var msgs = [];
+    snapshot.forEach(function(child) { msgs.push(child.val()); });
+    msgs.reverse();
+
+    if (msgs.length === 0) {
+      return;
+    }
+
+    msgs.forEach(function(msg) {
+      var date = new Date(msg.timestamp).toLocaleDateString('es', {
+        day: '2-digit', month: 'short', year: 'numeric'
+      });
+      var div = document.createElement('div');
+      div.className = 'gb-entry';
+      div.innerHTML =
+        '<div class="gb-entry-name">' + esc(msg.name) + '</div>' +
+        '<div class="gb-entry-msg">' + esc(msg.message) + '</div>' +
+        '<div class="gb-entry-date">' + date + '</div>';
+      container.appendChild(div);
+    });
+  });
+
+  function esc(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  /* ── Guestbook: enviar ── */
+  function submitMessage(e) {
+    e.preventDefault();
+    var name    = document.getElementById('gbName').value.trim();
+    var message = document.getElementById('gbMessage').value.trim();
+    if (!name || !message) return;
+
+    var status    = document.getElementById('gbStatus');
+    var submitBtn = document.getElementById('gbSubmit');
+    submitBtn.disabled = true;
+    status.textContent = 'Enviando...';
+
+    var timestamp = Date.now();
+
+    db.ref('messages').push({ name: name, message: message, timestamp: timestamp })
+      .then(function() {
+        return emailjs.send('service_2kf9yak', 'template_3pjvt0e', {
+          from_name: name,
+          message:   message,
+          date:      new Date(timestamp).toLocaleString('es')
+        });
+      })
+      .then(function() {
+        status.textContent = 'Nota enviada!';
+        document.getElementById('gbForm').reset();
+      })
+      .catch(function() {
+        status.textContent = 'Nota guardada!';
+        document.getElementById('gbForm').reset();
+      })
+      .finally(function() {
+        submitBtn.disabled = false;
+        setTimeout(function() { status.textContent = ''; }, 3000);
+      });
+  }
 </script>
 </body>
 </html>
