@@ -477,7 +477,7 @@
 </table>
 
 <div class="footer">
-  &copy; 2026 Christopher Melendez &mdash; No hay derechos de autor, pero s&#237;gueme como camelendezl en github!!!
+  &copy; 2026 Christopher Melendez - No hay derechos de autor, pero s&#237;gueme como camelendezl en github!!!
 </div>
 
 <!-- Firebase compat SDK -->
@@ -564,6 +564,84 @@
 
   /* ── EmailJS ── */
   emailjs.init("HSQTvbx35lPiMiYL1");
+
+  /* ── Contador de visitas (invisible) ── */
+  var VISIT_MAIL_GAP_MS = 12 * 60 * 60 * 1000;   // 1 aviso por navegador cada 12 h
+  var visitMailSent = false;                     // 1 aviso por carga de pagina
+  var visitTest = /[?&]testvisita/.test(location.search);
+
+  function store(kind, key, value) {
+    try {
+      var box = kind === 'session' ? sessionStorage : localStorage;
+      if (value === undefined) return box.getItem(key);
+      box.setItem(key, value);
+    } catch (e) {
+      return null;
+    }
+  }
+
+  function notifyVisit(total, motivo) {
+    if (visitMailSent) return;
+    var now  = Date.now();
+    var last = parseInt(store('local', 'fer_visit_mailed') || '0', 10);
+    if (!visitTest && now - last < VISIT_MAIL_GAP_MS) {
+      console.log('[visitas] aviso omitido, ya se envio uno hace poco');
+      return;
+    }
+    visitMailSent = true;
+    store('local', 'fer_visit_mailed', String(now));
+    console.log('[visitas] enviando aviso...', motivo);
+
+    emailjs.send('service_2kf9yak', 'template_3pjvt0e', {
+      from_name: 'Visita #' + total,
+      message:   'Alguien abrio la pagina.' +
+                 '\nVisita numero: ' + total +
+                 '\nLlego desde: ' + (document.referrer || 'directo') +
+                 '\nPagina: ' + location.href +
+                 '\nPantalla: ' + screen.width + 'x' + screen.height +
+                 '\nNavegador: ' + navigator.userAgent,
+      date:      new Date(now).toLocaleString('es')
+    }).then(function() {
+      console.log('[visitas] correo enviado');
+    }, function(err) {
+      visitMailSent = false;
+      store('local', 'fer_visit_mailed', '0');
+      console.warn('[visitas] EmailJS fallo:', err);
+    });
+  }
+
+  function countVisit() {
+    if (visitTest) store('session', 'fer_visit_counted', '');
+    if (store('session', 'fer_visit_counted')) {
+      console.log('[visitas] esta pestana ya conto la visita');
+      return;
+    }
+    store('session', 'fer_visit_counted', '1');
+
+    // Si Firebase no responde en 6 s, avisa igual.
+    var plazo = setTimeout(function() {
+      notifyVisit('?', 'sin respuesta de Firebase');
+    }, 6000);
+
+    db.ref('visits').transaction(function(current) {
+      return (current || 0) + 1;
+    }, function(error, committed, snapshot) {
+      clearTimeout(plazo);
+      if (error) {
+        console.warn('[visitas] Firebase fallo (revisa las reglas de /visits):', error);
+        notifyVisit('?', 'Firebase rechazo la escritura');
+        return;
+      }
+      if (!committed) {
+        notifyVisit('?', 'transaccion cancelada');
+        return;
+      }
+      console.log('[visitas] visita numero', snapshot.val());
+      notifyVisit(snapshot.val(), 'ok');
+    });
+  }
+
+  countVisit();
 
   /* ── Guestbook: cargar mensajes ── */
   db.ref('messages').orderByChild('timestamp').on('value', function(snapshot) {
